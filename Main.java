@@ -10,29 +10,28 @@ class Main {
             letters[i] = 0;
         }
 
-        for (int i = 0; i < args.length; i++) {
-            String inputFile = args[i];
-            File f = new File(inputFile);
-            try {
-                BufferedReader buffed = new BufferedReader(new FileReader(f));
-                while((myChar = buffed.read()) != -1) {
-                    //System.out.println(myChar);
-                    for (int j = 0; j < 256; j++) {
-                        if (myChar == j) {
-                            letters[j]++;
-                            break;
-                        }
+        String inputFile = args[0], outputFile = args[1];
+        File readIt = new File(inputFile), writeIt = new File(outputFile);
+        try {
+            BufferedReader inStyle = new BufferedReader(new FileReader(readIt));
+            BufferedWriter outStyle = new BufferedWriter(new FileWriter(writeIt));
+            while((myChar = inStyle.read()) != -1) {
+                for (int j = 0; j < 256; j++) {
+                    if (myChar == j) {
+                        letters[j]++;
+                        break;
                     }
                 }
-                for (int k = 0; k < 256; k++) {
-                    if (letters[k] > 0) {
-                        System.out.println((char)k + "   " + letters[k]);
-                    }
-                }
-                buffed.close();
-            } catch (Exception e) {
-                System.out.println("No file");
             }
+            for (int k = 33; k < 256; k++) {
+                if (letters[k] > 0) {
+                    outStyle.write((char)k + "   #" + letters[k] + '\n');
+                }
+            }
+            inStyle.close();
+            outStyle.close();
+        } catch (Exception e) {
+            System.out.println("No file");
         }
     }
 }
